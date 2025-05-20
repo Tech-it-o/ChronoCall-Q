@@ -1,28 +1,31 @@
 import json
 import random
+import os
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # load title template
-with open('Component/Title.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'Component', 'Title.json'), 'r', encoding='utf-8') as f:
     data_title = json.load(f)
 
-with open('Component/TimeDic_mostly.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'Component', 'TimeDic_mostly.json'), 'r', encoding='utf-8') as f:
     data_time = json.load(f)
 
-with open('Component/Mounth.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'Component', 'Mounth.json'), 'r', encoding='utf-8') as f:
     data_mounth = json.load(f)
 
 # text template
 
-with open('action/add_event.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action_datetext', 'add_event.json'), 'r', encoding='utf-8') as f:
     data_add = json.load(f)
 
-with open('action/delete_event.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action_datetext', 'delete_event.json'), 'r', encoding='utf-8') as f:
     data_delete = json.load(f)
 
-with open('action/update_event.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action_datetext', 'update_event.json'), 'r', encoding='utf-8') as f:
     data_update = json.load(f)
 
-with open('action/view_event.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action_datetext', 'view_event.json'), 'r', encoding='utf-8') as f:
     data_view = json.load(f)
 
 # function

@@ -16,16 +16,16 @@ with open(os.path.join(base_dir, 'Component', 'Mounth.json'), 'r', encoding='utf
 
 # text template
 
-with open(os.path.join(base_dir, 'action_datetext', 'add_event.json'), 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action', 'add_event.json'), 'r', encoding='utf-8') as f:
     data_add = json.load(f)
 
-with open(os.path.join(base_dir, 'action_datetext', 'delete_event.json'), 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action', 'delete_event.json'), 'r', encoding='utf-8') as f:
     data_delete = json.load(f)
 
-with open(os.path.join(base_dir, 'action_datetext', 'update_event.json'), 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action', 'update_event.json'), 'r', encoding='utf-8') as f:
     data_update = json.load(f)
 
-with open(os.path.join(base_dir, 'action_datetext', 'view_event.json'), 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, 'action', 'view_event.json'), 'r', encoding='utf-8') as f:
     data_view = json.load(f)
 
 # function
@@ -40,6 +40,7 @@ def add_event_data(day, mounth ,year):
     text = (random.choice(data_add)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
+        "current_date": "2025-05-06",
         "input": text,
         "output": {
         "action": "add_event_date",
@@ -59,6 +60,7 @@ def delete_event_data(day, mounth ,year):
     text = (random.choice(data_delete)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
+        "current_date": "2025-05-06",
         "input": text,
         "output": {
         "action": "delete_event_date",
@@ -77,6 +79,7 @@ def update_event_data(day, mounth ,year):
     text = (random.choice(data_update)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
+        "current_date": "2025-05-06",
         "input": text,
         "output": {
         "action": "update_event",
@@ -96,6 +99,7 @@ def view_event_data(day, mounth ,year):
     text = (random.choice(data_view)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
+        "current_date": "2025-05-06",
         "input": text,
         "output": {
         "action": "view_event_date",

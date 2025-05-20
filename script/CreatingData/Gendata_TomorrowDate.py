@@ -3,7 +3,7 @@ import random
 import json
 
 # load title template
-with open('Component_datetext/Title.json', 'r', encoding='utf-8') as f:
+with open('Component/Title.json', 'r', encoding='utf-8') as f:
     data_title = json.load(f)
 
 with open('Component_datetext/TimeDic_mostly.json', 'r', encoding='utf-8') as f:
@@ -81,22 +81,20 @@ def add_event_data(date):
     random_day_class = random.choice(["พรุ่งนี้", "มะรืน", "จันทร์หน้า", "อังคารหน้า", "พุธหน้า", "พฤหัสหน้า", "ศุกร์หน้า", "เสาร์หน้า", "อาทิตย์หน้า"])
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
-    actual_date =  
+    answer_date =  resolve_date_only(date, random_day_class)
+    time = random.choice(data_time[actual_time])
+    text = (random.choice(data_add)).replace("[date]", random_day_class).replace("[time]", time).replace("[title]", title)
 
-    # date = (str(day) + " " + random.choice(data_mounth[str(mounth)]))
-    # time = random.choice(data_time[actual_time])
-    # text = (random.choice(data_add)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
-
-    # return {
-    #     "current_date" : 
-    #     "input": text,
-    #     "output": {
-    #     "action": "add_event_date",
-    #     "date": actual_date,
-    #     "time": actual_time,
-    #     "title": title
-    #     }
-    # }
+    return {
+        "current_date" : date,
+        "input": text,
+        "output": {
+        "action": "add_event_date",
+        "date": answer_date,
+        "time": actual_time,
+        "title": title
+        }
+    }
 
 # print(resolve_date_only("2025-05-20", "พรุ่งนี้"))      # 2025-05-21
 # print(resolve_date_only("2025-05-20", "มะรืน"))        # 2025-05-22

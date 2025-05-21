@@ -3,6 +3,8 @@ import random
 import json
 import os
 
+random.seed(69)
+
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # load title template
@@ -11,6 +13,9 @@ with open(os.path.join(base_dir, 'Component_datetext', 'Title.json'), 'r', encod
 
 with open(os.path.join(base_dir, 'Component_datetext', 'TimeDic_mostly.json'), 'r', encoding='utf-8') as f:
     data_time = json.load(f)
+
+with open(os.path.join(base_dir, 'Component_datetext', 'DayWord.json'), 'r', encoding='utf-8') as f:
+    data_date = json.load(f)
 
 # text template
 
@@ -26,37 +31,53 @@ with open(os.path.join(base_dir, 'action_datetext', 'update_event.json'), 'r', e
 with open(os.path.join(base_dir, 'action_datetext', 'view_event.json'), 'r', encoding='utf-8') as f:
     data_view = json.load(f)
 
-thai_weekdays = {
-    "จันทร์": 0,
-    "อังคาร": 1,
-    "พุธ": 2,
-    "พฤหัส": 3,
-    "ศุกร์": 4,
-    "เสาร์": 5,
-    "อาทิตย์": 6
-}
+def resolve_date_only(base_date_str, day_word):
+    base_date = datetime.strptime(base_date_str, "%Y-%m-%d")
+    day_word = day_word.strip()
 
-def resolve_date_only(input_date_str, keyword):
-    input_date = datetime.strptime(input_date_str, "%Y-%m-%d")
+    weekdays_th = {
+        'จันทร์': 0,
+        'อังคาร': 1,
+        'พุธ': 2,
+        'พฤหัส': 3,
+        'ศุกร์': 4,
+        'เสาร์': 5,
+        'อาทิตย์': 6
+    }
 
-    if keyword == "พรุ่งนี้":
-        target_date = input_date + timedelta(days=1)
-    elif keyword == "มะรืน":
-        target_date = input_date + timedelta(days=2)
-    elif "หน้า" in keyword:
-        for day_name in thai_weekdays:
-            if day_name in keyword:
-                target_weekday = thai_weekdays[day_name]
-                current_weekday = input_date.weekday()
-                delta_days = (target_weekday - current_weekday + 7) % 7
-                if delta_days == 0:
-                    delta_days = 7
-                target_date = input_date + timedelta(days=delta_days)
-                break
+    if day_word == "วันนี้":
+        return base_date.strftime("%Y-%m-%d")
+    elif day_word == "พรุ่งนี้":
+        return (base_date + timedelta(days=1)).strftime("%Y-%m-%d")
+    elif day_word == "มะรืน":
+        return (base_date + timedelta(days=2)).strftime("%Y-%m-%d")
     else:
-        raise ValueError("Unknown keyword")
+        for wd in weekdays_th.keys():
+            if day_word.startswith(wd):
+                weekday_target = weekdays_th[wd]
+                suffix = day_word[len(wd):].strip()
 
-    return target_date.strftime("%Y-%m-%d")
+                base_weekday = base_date.weekday()
+
+                if suffix == "นี้" or suffix == "ที่จะถึงนี้":
+                    days_ahead = (weekday_target - base_weekday) % 7
+                    if days_ahead == 0:
+                        target_date = base_date
+                    else:
+                        target_date = base_date + timedelta(days=days_ahead)
+                elif suffix == "หน้า":
+                    days_ahead = (weekday_target - base_weekday) % 7
+                    if days_ahead == 0:
+                        days_ahead = 7
+                    else:
+                        days_ahead += 7
+                    target_date = base_date + timedelta(days=days_ahead)
+                else:
+                    return None
+
+                return target_date.strftime("%Y-%m-%d")
+
+        return None
 
 def list_dates_only(year=None):
     if year is None:
@@ -76,7 +97,7 @@ def list_dates_only(year=None):
 
 
 def add_event_data(date):
-    random_day_class = random.choice(["พรุ่งนี้", "มะรืน", "จันทร์หน้า", "อังคารหน้า", "พุธหน้า", "พฤหัสหน้า", "ศุกร์หน้า", "เสาร์หน้า", "อาทิตย์หน้า"])
+    random_day_class = random.choice(data_date)
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     answer_date =  resolve_date_only(date, random_day_class)
@@ -95,7 +116,7 @@ def add_event_data(date):
     }
 
 def delete_event_data(date):
-    random_day_class = random.choice(["พรุ่งนี้", "มะรืน", "จันทร์หน้า", "อังคารหน้า", "พุธหน้า", "พฤหัสหน้า", "ศุกร์หน้า", "เสาร์หน้า", "อาทิตย์หน้า"])
+    random_day_class = random.choice(data_date)
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     answer_date =  resolve_date_only(date, random_day_class)
@@ -113,7 +134,7 @@ def delete_event_data(date):
     }
 
 def update_event_data(date):
-    random_day_class = random.choice(["พรุ่งนี้", "มะรืน", "จันทร์หน้า", "อังคารหน้า", "พุธหน้า", "พฤหัสหน้า", "ศุกร์หน้า", "เสาร์หน้า", "อาทิตย์หน้า"])
+    random_day_class = random.choice(data_date)
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     answer_date =  resolve_date_only(date, random_day_class)
@@ -132,7 +153,7 @@ def update_event_data(date):
     }
 
 def view_event_data(date):
-    random_day_class = random.choice(["พรุ่งนี้", "มะรืน", "จันทร์หน้า", "อังคารหน้า", "พุธหน้า", "พฤหัสหน้า", "ศุกร์หน้า", "เสาร์หน้า", "อาทิตย์หน้า"])
+    random_day_class = random.choice(data_date)
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     answer_date =  resolve_date_only(date, random_day_class)

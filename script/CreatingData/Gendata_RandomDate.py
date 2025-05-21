@@ -5,6 +5,8 @@ from datetime import datetime
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
+random.seed(69)
+
 # load title template
 with open(os.path.join(base_dir, 'Component', 'Title.json'), 'r', encoding='utf-8') as f:
     data_title = json.load(f)

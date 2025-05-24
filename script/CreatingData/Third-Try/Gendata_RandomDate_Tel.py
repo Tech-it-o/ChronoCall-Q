@@ -2,10 +2,11 @@ import json
 import random
 import os
 from datetime import datetime
-
-base_dir = os.path.dirname(os.path.abspath(__file__))
+from pathlib import Path
 
 random.seed(69)
+
+base_dir = Path(__file__).resolve().parent.parent
 
 # load title template
 with open(os.path.join(base_dir, 'Component', 'Title.json'), 'r', encoding='utf-8') as f:
@@ -37,13 +38,14 @@ def add_event_data(day, mounth ,year ,current_date):
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     actual_date = str(year)+"-"+f"{mounth:02}"+"-"+f"{day:02}"
-
+    current_day = datetime.strptime(current_date, "%Y-%m-%d").strftime("%A")
     date = (str(day) + " " + random.choice(data_mounth[str(mounth)]))
     time = random.choice(data_time[actual_time])
     text = (random.choice(data_add)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
         "current_date": current_date,
+        "current_day" : current_day,
         "input": text,
         "output": {
         "action": "add_event_date",
@@ -57,13 +59,14 @@ def delete_event_data(day, mounth ,year ,current_date):
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     actual_date = str(year)+"-"+f"{mounth:02}"+"-"+f"{day:02}"
-
+    current_day = datetime.strptime(current_date, "%Y-%m-%d").strftime("%A")
     date = (str(day) + " " + random.choice(data_mounth[str(mounth)]))
     time = random.choice(data_time[actual_time])
     text = (random.choice(data_delete)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
         "current_date": current_date,
+        "current_day" : current_day,
         "input": text,
         "output": {
         "action": "delete_event_date",
@@ -76,13 +79,14 @@ def update_event_data(day, mounth ,year ,current_date):
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     actual_date = str(year)+"-"+f"{mounth:02}"+"-"+f"{day:02}"
-
+    current_day = datetime.strptime(current_date, "%Y-%m-%d").strftime("%A")
     date = (str(day) + " " + random.choice(data_mounth[str(mounth)]))
     time = random.choice(data_time[actual_time])
     text = (random.choice(data_update)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
         "current_date": current_date,
+        "current_day" : current_day,
         "input": text,
         "output": {
         "action": "update_event",
@@ -96,13 +100,14 @@ def view_event_data(day, mounth ,year ,current_date):
     actual_time = (random.choice(list(data_time.keys())))
     title = (random.choice(data_title["เพิ่มนัด"]))
     actual_date = str(year)+"-"+f"{mounth:02}"+"-"+f"{day:02}"
-
+    current_day = datetime.strptime(current_date, "%Y-%m-%d").strftime("%A")
     date = (str(day) + " " + random.choice(data_mounth[str(mounth)]))
     time = random.choice(data_time[actual_time])
     text = (random.choice(data_view)).replace("[date]", date).replace("[time]", time).replace("[title]", title)
 
     return {
         "current_date": current_date,
+        "current_day" : current_day,
         "input": text,
         "output": {
         "action": "view_event_date",
@@ -139,7 +144,7 @@ for m in range(1, 13):
             elif i == 3:
                 data.append(view_event_data(d, m, year, current_date_str))
 
-name = "data-RandomCurrentDate"
+name = "data-RandomCurrentDate-Tel"
 
 with open(name+".json", "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=2)

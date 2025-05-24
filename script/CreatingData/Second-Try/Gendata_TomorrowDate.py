@@ -2,10 +2,11 @@ from datetime import datetime, timedelta
 import random
 import json
 import os
+from pathlib import Path
 
 random.seed(69)
 
-base_dir = os.path.dirname(os.path.abspath(__file__))
+base_dir = Path(__file__).resolve().parent.parent
 
 # load title template
 with open(os.path.join(base_dir, 'Component_datetext', 'Title.json'), 'r', encoding='utf-8') as f:

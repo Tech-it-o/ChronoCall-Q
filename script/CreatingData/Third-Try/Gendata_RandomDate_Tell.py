@@ -144,7 +144,7 @@ for m in range(1, 13):
             elif i == 3:
                 data.append(view_event_data(d, m, year, current_date_str))
 
-name = "data-RandomCurrentDate-Tel"
+name = "data-RandomCurrentDate-Tell"
 
 with open(name+".json", "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=2)

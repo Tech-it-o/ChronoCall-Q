@@ -191,7 +191,7 @@ for date in list_dates_only(2025):
     data.append(update_event_data(date))
     data.append(view_event_data(date))
 
-name = "data-dateBytime-Tel"
+name = "data-dateBytime-Tell"
 
 with open(name+".json", "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
